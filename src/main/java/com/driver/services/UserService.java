@@ -7,22 +7,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository3;
 
-    @Autowired
-    BlogService blogService3;
+//    @Autowired    I commented
+//    BlogService blogService3;
 
     public void createUser(User user){
+        userRepository3.save(user);
     }
 
     public void deleteUser(int userId){
+        userRepository3.deleteById(userId);
     }
 
     public void updateUser(User user){
+
         userRepository3.save(user);
     }
 
