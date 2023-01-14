@@ -28,6 +28,8 @@ public class Blog {
     private List<Image> listOfImage;
 
 
+    public Blog() {
+    }
 
     public Blog(String title, String content) {
         this.title = title;

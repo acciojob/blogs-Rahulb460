@@ -13,6 +13,9 @@ public class Image {
     private String description;
     private String dimensions;
 
+    public Image() {
+    }
+
     public Image(String description, String dimensions) {
         this.description = description;
         this.dimensions = dimensions;
