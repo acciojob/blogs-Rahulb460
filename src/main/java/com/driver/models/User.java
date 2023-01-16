@@ -29,6 +29,7 @@ public class User {
     public User() {
     }
 
+
     public int getId() {
         return id;
     }
@@ -76,4 +77,5 @@ public class User {
     public void setListOfBlogs(List<Blog> listOfBlogs) {
         this.listOfBlogs = listOfBlogs;
     }
+
 }

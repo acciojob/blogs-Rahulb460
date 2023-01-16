@@ -1,11 +1,11 @@
 package com.driver.services;
 
 import com.driver.models.*;
+import com.driver.repositories.BlogRepository;
 import com.driver.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,15 +13,21 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
+    @Autowired
+    BlogRepository blogRepository;
+
     public Image createAndReturn(Blog blog, String description, String dimensions){
         //create an image based on given parameters and add it to the imageList of given blog
-        Image image = new Image(description, dimensions);
-        imageRepository2.save(image);
+        Image image = new Image();
+        image.setBlog(blog);
+        image.setDescription(description);
+        image.setDimensions(dimensions);
 
-        List<Image> imageList = new ArrayList<>();
+        List<Image> imageList = blog.getListOfImage();
         imageList.add(image);
         blog.setListOfImage(imageList);
-
+        imageRepository2.save(image);
+        blogRepository.save(blog);
         return image;
     }
 
@@ -29,36 +35,23 @@ public class ImageService {
         imageRepository2.delete(image);
     }
 
-//    public Image findById(int id) {
-//
-//    }
+    public Image findById(int id) {
+        return imageRepository2.findById(id).get();
+    }
 
     public int countImagesInScreen(Image image, String screenDimensions) {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
         //In case the image is null, return 0
-        String imageDimension= image.getDimensions();
-        String current = "";
-        for(int i = 0; i < imageDimension.length(); i++) {
-            if(imageDimension.charAt(i) == 'X') {
-                break;
-            }
-            else {
-                current += screenDimensions.charAt(i);
-            }
-        }
-        int currentDim = Integer.parseInt(current);
+        String imageDimension = image.getDimensions();
+        int screenDimensionsLength = Integer.parseInt(screenDimensions.split("X")[0]);
+        int screenDimensionsBreadth = Integer.parseInt(screenDimensions.split("X")[1]);
 
-        String current1 = "";
-        for(int i = 0; i < screenDimensions.length(); i++) {
-            if(screenDimensions.charAt(i) == 'X'){
-                break;
-            }
-            else {
-                current1 += screenDimensions.charAt(i);
-            }
-        }
-        int current1Dim = Integer.parseInt(current1);
+        int imageLength = Integer.parseInt(imageDimension.split("X")[0]);
+        int imageBreadth = Integer.parseInt(imageDimension.split("X")[1]);
 
-        return current1Dim / currentDim;
+        int maxLength = screenDimensionsLength / imageLength;
+        int maxBreadth = screenDimensionsBreadth / imageBreadth;
+
+        return maxLength * maxBreadth;
     }
 }

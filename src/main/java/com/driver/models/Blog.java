@@ -1,8 +1,4 @@
 package com.driver.models;
-
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +12,7 @@ public class Blog {
 
     private String title;
     private String content;
-    @CreationTimestamp
-    @Temporal(value = TemporalType.TIMESTAMP)
+
     private Date pubDate;
 
     @ManyToOne
@@ -31,9 +26,10 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(String title, String content) {
+    public Blog(String title, String content, Date pubDate) {
         this.title = title;
         this.content = content;
+        this.pubDate = pubDate;
     }
 
     public int getId() {
@@ -83,4 +79,6 @@ public class Blog {
     public void setListOfImage(List<Image> listOfImage) {
         this.listOfImage = listOfImage;
     }
+
+
 }
